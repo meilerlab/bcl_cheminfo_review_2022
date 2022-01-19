@@ -1,0 +1,463 @@
+=crt=bcl::random=> Seed was set to 5489!
+
+=============================================================================================================================================================================================
+
+molecule:Properties Help
+BCL v4.2.0, r0, compiled on Mon Jan 17 03:05:27 2022
+Usage: bcl.exe molecule:Properties  [OPTIONAL FLAGS] [@FILENAMES]
+
+=============================================================================================================================================================================================
+
+BCL FLAGS: affect general BCL functionality, but may not be relevant for all applications
+
+-message_level : adjust the MessageLevel
+  <level> minimum level of messages that will be printed, default: "Standard", Allowed values: {Error, Silent, Critical, Standard, Verbose, Debug}
+  <verbosity> set to Detail to print the source file and line of origination for each message, default: "Summary", Allowed values: {Summary, Detail}
+-logger : change the logger this executable uses
+    default: "Default", Choose from the following: { Default, File}
+  <identifier> define a logger identifier - for file, it is the filename to be opened, optional
+-help : output user help for the bcl or an application
+-readme : output readme information for the application
+-file_compressed_alternatives : set to enable the search for files that cannot be opened, but for which a file with a compression extension might exist as alternative
+-file_compression : the type of file compression to be used for files
+  <compression_type> compression algorithm to be used, default: "Uncompressed", Choose from the following: { Uncompressed, BZ2, GZ, Crypt}
+-enums_files : files for enum data that adds enums or overrides data of existing enum data, This flag can be followed by  at most 27 
+  <enum_file> file that is similar to a written Enums derived class
+-random_seed : adjust the random seed; if flag is used, system time is used as seed, if additional parameter is passed, the given number will be used, otherwise default will be used
+  <seed> random seed for the random number generator, default: "5489", range: [0,18446744073709551615]
+-model_path : change path for reading and writing models
+  <model_path_name> relative or absolute model path, default: "/dors/meilerlab/apps/bcl/model/rev_5051/", any directory, if not provided, defaults to
+    /dors/meilerlab/apps/bcl/model/rev_5051/; search path is: {model/:../model/:../model/:bcl/model/:/dors/meilerlab/apps/bcl/model/rev_5051/:model/:model/}
+-histogram_path : change path for reading and writing histograms for scores
+  <path> relative or absolute path, default: "/dors/meilerlab/apps/bcl/histograms/rev_5265/", any directory, if not provided, defaults to /dors/meilerlab/apps/bcl/histograms/rev_5265/;
+    search path is: {histogram/:../histogram/:../histogram/:bcl/histogram/:/dors/meilerlab/apps/bcl/histograms/rev_5265/:histogram/:histogram/}
+-opencl : choice of opencl platform and device type
+  <platform> opencl platform; Disabled because this machine lacks libOpenCL or does not have the appropriate /etc/OpenCL/vendors .icd files, or Disable was already given, 
+             default: "Disable", allowed values: {Disable}
+-scheduler : choice of scheduler and number of cpus
+  <scheduler> type of scheduler, default: "Serial", Choose from the following: { Serial, PThread}
+  <number_cpus> number of cpus for a multi job scheduler, default: "1", range: [1,1000]
+
+=============================================================================================================================================================================================
+
+APPLICATION FLAGS: syntax: -flagname [flagparameter1] ... 
+
+-help : output user help for the bcl or an application
+-readme : output readme information for the application
+-input_filenames : input files containing molecules in sdf format, This flag can be followed by  any number of 
+  <filenames> files containing molecules in sdf format, any existent file
+-input_start : index (0-offset) of first molecule to load for input
+  <start> index (0-offset) of first molecule to load, default: "0", range: [0,18446744073709551615]
+-input_max : Specify the maximum number of molecules to be loaded for input
+  <number> number of molecules, default: "18446744073709551615", range: [1,18446744073709551615]
+-add_h : add hydrogens to molecules when loaded
+-remove_h : remove hydrogens from molecules when loaded
+-neutralize : neutralize charges; by default, if the flag is specified but no neutralization type is given, BondOrderAndpH will be used, otherwise, no neutralization is used. All
+              neutralization algorithms preserve aromaticity except BondOrderAndpHAromaticityLossOk
+  <method> method used to neutralize charged atoms in the molecule, default: "BondOrderAndpH", Allowed values: {None, BondOrder, pH, BondOrderAndpH, BondOrderAndpHAromaticityLossOk}
+-explicit_aromaticity : write MDL bonds with aromatic bonds specified explicitly (as 4); alternatively, the default behavior during MDL writing is to kekulize aromatic rings (write
+                        alternating single (1) / double (2) bonds)
+-numeric_histogram : properties containing numeric values, min value, bin size, # bins, This flag can be followed by  any number of 
+  <property> atom or small molecule property, choose any  Molecule / Atom Numeric descriptor :
+      
+      *********************************************************************************************************************************************************************************
+      ************************************************************************** Descriptors of Molecules *****************************************************************************
+      *********************************************************************************************************************************************************************************
+
+      
+      Basic Implementations
+        * Atom_Identity : 1, for any atom or molecule. The Atom_ prefix is purely for backwards-compatibility. In new descriptor files, the use of Constant(1) is preferred. Alias for
+          : Constant(1)
+        * CovalentSurfaceArea : covalent surface area. Alias for : MoleculeSum(Atom_CovalentSurfaceArea)
+        * CovalentVolume : covalent volume. Alias for : MoleculeSum(Atom_CovalentVolume)
+        * EstCovSurfaceArea : Estimated covalent surface area (conformation independent). Alias for : MoleculeSum(Atom_EstCovalentSurfaceArea)
+        * EstVdwSurfaceArea : Estimated van-der-waals surface area (conformation independent), using element-based VDW radii. Alias for : MoleculeSum(Atom_EstVdwSurfaceArea)
+        * EstVdwSurfaceAreaCSD : Estimated van-der-waals surface area (conformation independent), using more accurate, CSD-derived atom-type VdW radii, which tend to give larger SAs
+          to H than EstVdwSurfaceArea. Alias for : MoleculeSum(Atom_EstVdwSurfaceAreaCSD)
+        * Girth : calculates the girth of a molecule
+        * HbondAcceptor : # hydrogen bond acceptors. Alias for : MoleculeSum(Atom_HbondAcceptors)
+        * HbondDonor : # hydrogen bond donors. Alias for : MoleculeSum(Atom_HbondDonors)
+        * LipinskiDruglike : Returns 1 if the number of Lipinski violations is less than 2. Alias for : Less(lhs=LipinskiViolations,rhs=Constant(2))
+        * LipinskiViolations : calculates how many times a molecule violates Lipinski's Rule of 5
+        * LipinskiViolationsVeber : calculates how many times a molecule violates Veber's variant of the Lipinski's Rule of 5 (<10 rotatable bonds, Polar SA < 140 A^2; see J. Med.
+          Chem., 2002, 45 (12), pp 2615–2623)
+        * LogP : Calculates logp using the heuristic formula from http://pubs.acs.org/doi/full/10.1021/ci010315d
+        * LogP2008 : Calculates logp using the heuristic formula from http://pubs.acs.org/doi/full/10.1021/ci010315d
+        * MACCS : Retrieves the MACCS of each molecule using a modified pubchem MACCS fingerprint. See ftp://ftp.ncbi.nlm.nih.gov/pubchem/specifications/pubchem_fingerprints.txt for
+          details on the pubchem values
+        * MaxRingSize : Largest unbridged ring inside the molecule; returns 2 for ringless molecules. Alias for : MoleculeMax(AtomMaxRingSize)
+        * MinRingSize : Smallest ring inside the molecule; returns 10000 for ringless molecules. Alias for : MoleculeMin(AtomMinRingSize)
+        * MoleculeComplexity : calculates the complexity of a molecule (see http://www.jcheminf.com/content/1/1/8)
+        * MoleculeOneFourClashScore : Calculates the sum of one-four clash scores in the molecule
+        * MoleculeTotalBondEnergy : Calculates the sum of bond energies derived from the statistical bond potential
+        * MoleculeVDWScore : Calculates the total molecule VDW score normalized by the number of atoms in the molecule
+        * NAromaticMacrocyclicRings : Number of Aromatic macrocyclic (>8 atoms) rings in the molecule
+        * NAromaticRings : Number of Aromatic rings in the molecule
+        * NAtoms : Number of atoms. Alias for : NElements
+        * NConjugatedMacrocyclicRings : Number of Conjugated macrocyclic (>8 atoms) rings in the molecule
+        * NConjugatedRings : Number of Conjugated rings in the molecule
+        * NElements : The number of Atom in the Molecule
+        * NHeavyAtoms : Number of non-hydrogen atoms in the molecule. Alias for : MoleculeSum(IsNotH)
+        * NMacrocyclicRings : Number of macrocyclic (>8 atoms) rings in the molecule
+        * NNonconjugatedMacrocyclicRings : Number of Nonconjugated macrocyclic (>8 atoms) rings in the molecule
+        * NNonconjugatedRings : Number of Nonconjugated rings in the molecule
+        * NRings : Number of rings in the molecule
+        * NRotBond : calculates the number of non-trivially rotatable bonds
+        * NRotBondSym : calculates the number of non-trivially rotatable bonds
+        * NStereo : Number of stereocenters. Alias for : MoleculeSum(NotEqual(Atom_Stereocenters,Constant(0)))
+        * Polarizability : total polarizability. Alias for : MoleculeSum(Atom_Polarizability)
+        * TopologicalPolarSurfaceArea : topological polar surface area. Alias for : MoleculeSum(Atom_TopologicalPolarSurfaceArea)
+        * TotalCharge : Sum of sigma and pi charges. Alias for : MoleculeSum(Atom_TotalCharge)
+        * TotalFormalCharge : Sum of formal charges on the molecule. Alias for : MoleculeSum(Atom_FormalCharge)
+        * VdwSurfaceArea : van der waals surface area. Alias for : MoleculeSum(Atom_VDWSurfaceArea)
+        * VdwVolume : van der waals volume. Alias for : MoleculeSum(Atom_VDWVolume)
+        * Weight : Molecular weight (amu). Alias for : MoleculeSum(Atom_Mass)
+        * XLogP : Calculates LogP using a multi-tasking deep neural network trained to predict LogP, LogS, and hydration free energy
+        
+      Customizable Implementations
+        * 3DInterHBondCode : Represents hydrogen bond interactions in relative distance and angle correlation bins; "3DInterHBondCode(help)" shows internal options
+        * AffinityNet : Calculates binding affinity (in units of pKd); "AffinityNet(help)" shows internal options
+        * AffinityNetAD : Calculates binding affinity (in units of pKd) weighted by 1.0 minus the model applicability domain score; "AffinityNetAD(help)" shows internal options
+        * BuserMetric : calculates the buser similarity score between ; "BuserMetric(help)" shows internal options
+        * Constant : Returns a constant set of values; "Constant(help)" shows internal options
+        * Default : given a number, returns that number, otherwise retrieves the value of the misc property by that name; "Default(help)" shows internal options
+        * Define : Define an alias for a given descriptor; "Define(help)" shows internal options
+        * DockANNScore : Calculates a docking score based on the local ppv classifying a pose as within 1.0 Angstroms of the native pose weighted by the predicted affinity of the pose
+        ;"DockANNScore(help)" shows internal options
+        * EntropyQHA : Sampling options for relative conformational entropy estimates. Descriptor output indices correspond to the global_s, local_s, global_s - local_s, and
+          -ln(local_s/global_s). The first 4 indices are actual entropy estimates in J*K^-1*mol^-1, while the latter 4 indices are the PCA eigenvalue sums.; "EntropyQHA(help)" shows
+        internal options
+        * IsConstitutionDruglike : Returns 1 if the molecule is druglike and 0 otherwise; "IsConstitutionDruglike(help)" shows internal options
+        * IsConstitutionDruglikeAndHitlike : Returns 1 if the molecule is druglike and 0 otherwise; "IsConstitutionDruglikeAndHitlike(help)" shows internal options
+        * MiscProperty : retrieves a molecule property that cannot be calculated directly by the bcl, e.g. biological data; "MiscProperty(help)" shows internal options
+        * MolAlignPharmScore : Performs quick property-based molecular alignment with BCL::MolAlign and returnsthe RMSDX score as well as atomic overlap metrics.; 
+          "MolAlignPharmScore(help)" shows internal options
+        * MoleculeAtomEnvironmentMap : Determines if molecule fragment radial atom environments exist in database; "MoleculeAtomEnvironmentMap(help)" shows internal options
+        * MoleculeSimilarity : Searches for specified substructures within the query molecule. Returns 1 if a structure exists in the query molecule; 
+          "MoleculeSimilarity(help)" shows internal options
+        * NAromaticRingHalogensMaxFragment : Determines the sum of the number of halogen substituents on aromatic rings in a molecule. Alternatively, identifies the aromatic ring with
+          the most number of halogens and returns that count.; "NAromaticRingHalogensMaxFragment(help)" shows internal options
+        * NAromaticRingHalogensTotal : Determines the sum of the number of halogen substituents on aromatic rings in a molecule. Alternatively, identifies the aromatic ring with the
+          most number of halogens and returns that count.; "NAromaticRingHalogensTotal(help)" shows internal options
+        * PCC-AD-DNN : Calculates binding affinity (in units of pKd) weighted by 1.0 minus the model applicability domain score; "PCC-AD-DNN(help)" shows internal options
+        * PCC-DNN : Calculates binding affinity (in units of pKd); "PCC-DNN(help)" shows internal options
+        * ReactionStructureSearch : Searches for specified substructures within the query molecule. Returns 1 if a structure exists in the query molecule; 
+          "ReactionStructureSearch(help)" shows internal options
+        * StructureCount : Searches for specified substructures within the query molecule. Returns the number of substructure matches that exist in the query molecule; 
+          "StructureCount(help)" shows internal options
+        * StructureSearch : Searches for specified substructures within the query molecule. Returns 1 if a structure exists in the query molecule; 
+          "StructureSearch(help)" shows internal options
+        * Template : Create a descriptor template; which is a partial definition for a descriptor, with remaining user-defined arguments that can be set later; 
+          "Template(help)" shows internal options
+        * UMol2D : calculates the number of certain types of atom environments; "UMol2D(help)" shows internal options
+        * UniformRandom : Returns a uniform-randomly chosen set of values; "UniformRandom(help)" shows internal options
+        * UniformRandomDuplicated : Returns a uniform-randomly chosen  value, copied {size} times; "UniformRandomDuplicated(help)" shows internal options
+        
+      Operations
+        * MoleculeMax : Returns the max of the given descriptor across a Molecule; "MoleculeMax(help)" shows internal options
+        * MoleculeMean : Returns the mean of the given descriptor across a Molecule; "MoleculeMean(help)" shows internal options
+        * MoleculeMin : Returns the min of the given descriptor across a Molecule; "MoleculeMin(help)" shows internal options
+        * MoleculeRange : Returns the range of the given descriptor across a Molecule; "MoleculeRange(help)" shows internal options
+        * MoleculeStandardDeviation : Returns the standarddeviation of the given descriptor across a Molecule; "MoleculeStandardDeviation(help)" shows internal options
+        * MoleculeSum : Returns the sum of the given descriptor across a Molecule; "MoleculeSum(help)" shows internal options
+        * MoleculeWeightedMean : mean of a descriptor across the Molecule, weighted by any other descriptor; "MoleculeWeightedMean(help)" shows internal options
+        * MoleculeWeightedStandardDeviation : standarddeviation of a descriptor across the Molecule, weighted by any other descriptor; 
+          "MoleculeWeightedStandardDeviation(help)" shows internal options
+        * MoleculeWeightedSum : sum of a descriptor across the Molecule, weighted by any other descriptor; "MoleculeWeightedSum(help)" shows internal options
+        * ShapeMoments : computes the mean, std, and skew of atomic distances from four anchor points: the molecular centroid (mct), closest atom to the mct (cam), furthest atom from
+          mct (fam), and furthest atom from fam (faf). The molecular centroid is the center of the positions, weighted by the anchor property.; "ShapeMoments(help)" shows internal options
+        
+      Customizable Operations
+        * 2DAMax : computes max for each bin of the 2DA of a specified atom property; "2DAMax(help)" shows internal options
+        * 2DAMaxSign : computes 2D (bond distance) autocorrelation of a specified atom property; "2DAMaxSign(help)" shows internal options
+        * 2DAMin : computes min for each bin of the 2DA of a specified atom property; "2DAMin(help)" shows internal options
+        * 3DAClosestPairRealSpace : Relates the autocorrelations of two independent molecules; "3DAClosestPairRealSpace(help)" shows internal options
+        * 3DAClosestPairRealSpaceAsymmetry : Relates the autocorrelations of two independent molecules; "3DAClosestPairRealSpaceAsymmetry(help)" shows internal options
+        * 3DAPairConvolution : Relates the autocorrelations of two independent molecules; "3DAPairConvolution(help)" shows internal options
+        * 3DAPairConvolutionAsymmetry : Relates the autocorrelations of two independent molecules; "3DAPairConvolutionAsymmetry(help)" shows internal options
+        * 3DAPairRealSpace : Relates the autocorrelations of two independent molecules; "3DAPairRealSpace(help)" shows internal options
+        * 3DAPairRealSpaceAsymmetry : Relates the autocorrelations of two independent molecules; "3DAPairRealSpaceAsymmetry(help)" shows internal options
+        * 3DAPairRealSpaceConvolution : Relates the autocorrelations of two independent molecules; "3DAPairRealSpaceConvolution(help)" shows internal options
+        * 3DAPairRealSpaceConvolutionAsymmetry : Relates the autocorrelations of two independent molecules; "3DAPairRealSpaceConvolutionAsymmetry(help)" shows internal options
+        * 3dDistribution : computes the smooth radial distribution function using a given atom property; "3dDistribution(help)" shows internal options
+        * 3dDistributionSign : computes the smooth radial distribution function using a given atom property; "3dDistributionSign(help)" shows internal options
+        * 3daSoftMax : computes the smooth radial distribution function using a given atom property; "3daSoftMax(help)" shows internal options
+        * 3daSoftMaxSign : computes the smooth radial distribution function using a given atom property; "3daSoftMaxSign(help)" shows internal options
+        * 3daSoftMin : computes the smooth radial distribution function using a given atom property; "3daSoftMin(help)" shows internal options
+        * Central2DASign : Measure 2DASign of property at variable distances from molecule topological center; "Central2DASign(help)" shows internal options
+        * CoulombicForce : computes the intramolecular coulombic force (without the dielectric constant); "CoulombicForce(help)" shows internal options
+        * MolecularAsymmetry : Calculates an rdf-like asymmetry vector for the molecule based on overall distribution of atoms and/or properties. Use of this descriptor must be cited
+          as: Sliwoski, Gregory, et al. "BCL:: EMAS—Enantioselective Molecular Asymmetry Descriptor for 3D-QSAR." Molecules 17.8 (2012): 9971-9989.
+        Link:  www.http://meilerlab.org/index.php/publications/show/2012
+        ; "MolecularAsymmetry(help)" shows internal options
+        * MolecularFragmentRescale : Statistics of a descriptor across the series of fragments split off the original molecule; "MolecularFragmentRescale(help)" shows internal options
+        * MolecularFragmentStatistics : Statistics of a descriptor across the series of fragments split off the original molecule; 
+          "MolecularFragmentStatistics(help)" shows internal options
+        * MolecularMaxFragmentStatistics : Statistics of a descriptor across the series of fragments split off the original molecule; 
+          "MolecularMaxFragmentStatistics(help)" shows internal options
+        * MoleculeHistogram1D : computes a histogram using a single descriptor; "MoleculeHistogram1D(help)" shows internal options
+        * RDFMaxSign : computes the smooth radial distribution function using a given atom property; "RDFMaxSign(help)" shows internal options
+        * RotamerCoulombicForce : computes the intramolecular coulombic force (without the dielectric constant) due to the rotamer chosen, thus ignoring covalent and 1,3 bonding
+          interactions; "RotamerCoulombicForce(help)" shows internal options
+        * Triangulator : computes triangular autocorrelation of a specified atom property.This is much like RDF, but considers all triplets of atoms.; 
+          "Triangulator(help)" shows internal options
+        
+      
+      *********************************************************************************************************************************************************************************
+      **************************************************************************** Descriptors of Atoms *******************************************************************************
+      *********************************************************************************************************************************************************************************
+
+        These can be converted into a Molecule-level descriptor using MoleculeSum(X), where X is any descriptor listed below
+      
+      Basic Implementations
+        * AtomMaxRingSize : Maximum size of a ring that this atom is part of. For atoms that are not in a ring, returns 2. The size of the largest ring with no internal rings is
+          returned for atoms that are part of ring systems
+        * AtomMinRingSize : Minimum size of a ring that this atom is part of. For atoms that are not in a ring, returns 10000. 
+        * AtomTypeNumber : Retrieves the atomic number of each atom
+        * Atom_AdditiveAtomicPolarizability : Retrieves the AdditiveAtomicPolarizability of desired atom
+        * Atom_AromaticityAxes : For aromatic atoms, the axes of the aromatic field
+        * Atom_BoilingPoint : Retrieves the elemental BoilingPoint for each atom
+        * Atom_CovalentRadius : Retrieves the elemental CovalentRadius for each atom
+        * Atom_CovalentSurfaceArea : approximates the surface area of atoms using the covalent radius, considering overlap from neighboring atoms. Alias for :
+          Atom_SurfaceArea(radius=Atom_CovalentRadius,min radius=Molecule/Atom Numeric Descriptor)
+        * Atom_CovalentVolume : approximates the volume of atoms using the covalent radius, considering overlap from neighboring atoms. Alias for :
+          Atom_Volume(radius=Atom_CovalentRadius,min radius=Molecule/Atom Numeric Descriptor)
+        * Atom_EffectivePolarizability : atomic polarizability smoothed over molecule
+        * Atom_ElectroNegativity : Retrieves the elemental ElectroNegativity for each atom
+        * Atom_EstCovalentSurfaceArea : The surface area, estimated from atom type covalent radii
+        * Atom_EstVdwSurfaceArea : The surface area, estimated from atom type elemental van der waals radii
+        * Atom_EstVdwSurfaceAreaCSD : The surface area, estimated from atom type CSD-derived van der waals radii
+        * Atom_FormalCharge : the formal charge of each atom
+        * Atom_GyromagneticRatio : Retrieves the elemental GyromagneticRatio for each atom
+        * Atom_HbondAcceptors : 1 for hydrogen bond acceptors (N and O), 0 for other elements
+        * Atom_HbondDonors : 1 for hydrogen bond donors (NH and OH), 0 for others
+        * Atom_IonizationPotential : Retrieves the elemental IonizationPotential for each atom
+        * Atom_IsSP : 1 for sp, -1 for non-sp non-terminal atoms, 0 for everything else
+        * Atom_IsSP2 : 1 for sp2, -1 for non-sp2 non-terminal atoms, 0 for everything else
+        * Atom_IsSP3 : 1 for sp3, -1 for non-sp3 non-terminal atoms, 0 for everything else
+        * Atom_LonePairEN : calculates lone-pair electronegativity, see http://www.springerlink.com/content/w300520690302287/fulltext.pdf
+        * Atom_LonePairElectronAffinity : Retrieves the LonePairElectronAffinity of desired atom
+        * Atom_LonePairElectronegativity : Retrieves the LonePairElectronegativity of desired atom
+        * Atom_LonePairIonizationPotential : Retrieves the LonePairIonizationPotential of desired atom
+        * Atom_MainGroup : Retrieves the elemental MainGroup for each atom
+        * Atom_Mass : Retrieves the elemental Mass for each atom
+        * Atom_MeltingPoint : Retrieves the elemental MeltingPoint for each atom
+        * Atom_NeighborDirection : The unit vector formed by the relative positions of neighboring atoms
+        * Atom_NumberValences : the formal charge of each atom
+        * Atom_PiCharge : uses Hueckel matrix to determine pi-orbital partial charge
+        * Atom_PiEN : uses Hueckel matrix to determine pi-orbital electronegativity
+        * Atom_PiOrbitalElectronegativityMulliken : Retrieves the PiOrbitalElectronegativityMulliken of desired atom
+        * Atom_PiOrbitalElectronegativityPauling : Retrieves the PiOrbitalElectronegativityPauling of desired atom
+        * Atom_PiValenceStateElectronAffinity : Retrieves the PiValenceStateElectronAffinity of desired atom
+        * Atom_PiValenceStateIonizationPotential : Retrieves the PiValenceStateIonizationPotential of desired atom
+        * Atom_Polarizability : computes the polarizability of each atom using the method from see J.Am.Chem.Soc. Vol 112, No. 23, 1990, 8534
+        * Atom_SigmaCharge : uses PEOE to determine sigma-orbital partial charge
+        * Atom_SigmaEN : uses PEOE to determine sigma-orbital electronegativity
+        * Atom_SigmaOrbitalElectronegativityMulliken : Retrieves the SigmaOrbitalElectronegativityMulliken of desired atom
+        * Atom_SigmaOrbitalElectronegativityPauling : Retrieves the SigmaOrbitalElectronegativityPauling of desired atom
+        * Atom_SigmaValenceStateElectronAffinity : Retrieves the SigmaValenceStateElectronAffinity of desired atom
+        * Atom_SigmaValenceStateIonizationPotential : Retrieves the SigmaValenceStateIonizationPotential of desired atom
+        * Atom_Stereocenters : 1 for R, -1 for S, 0 for achiral atoms, 2 for undefined chirality
+        * Atom_TopologicalPolarSurfaceArea : see Ertl, et. al. J. Med. Chem. 2000, 43, 3715
+        * Atom_TotalCharge : Returns the total charge on an atom. Alias for : Add(Atom_SigmaCharge,Atom_PiCharge)
+        * Atom_VDWSurfaceArea : approximates the surface area of atoms using the vdw radius, considering overlap from neighboring atoms. Alias for :
+          Atom_SurfaceArea(radius=Atom_VDWaalsRadius,min radius=Atom_CovalentRadius)
+        * Atom_VDWVolume : approximates the volume of atoms using the vdw radius, considering overlap from neighboring atoms. Alias for : Atom_Volume(radius=Atom_VDWaalsRadius,min
+          radius=Atom_CovalentRadius)
+        * Atom_VDWaalsRadius : Retrieves the elemental VDWaalsRadius for each atom
+        * Atom_Vcharge : Partial charges computed using vcharge 2003 algorithm and parameters, see http://pubs.acs.org/doi/full/10.1021/ci034148o
+        * Atom_VchargeV2 : Partial charges computed using vcharge 2003 algorithm and parameters, see http://pubs.acs.org/doi/full/10.1021/ci034148o
+        * AtomicNumbers : Retrieves the atomic number of each atom
+        * IsB : Returns 1 for boron atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(5))
+        * IsBr : Returns 1 for bromine atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(35))
+        * IsC : Returns 1 for carbon atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(6))
+        * IsCl : Returns 1 for chlorine atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(17))
+        * IsF : Returns 1 for fluorine atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(9))
+        * IsH : Returns 1 for hydrogen atoms, 0 for heavy atoms. Alias for : Less(lhs=AtomicNumbers,rhs=Constant(1.5))
+        * IsHalogen : Returns 1 for atoms in main group 7 (F,Cl,Br,I,At,Uus). Alias for : Equal(Atom_MainGroup,Constant(7))
+        * IsI : Returns 1 for iodine atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(53))
+        * IsN : Returns 1 for nitrogen atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(7))
+        * IsNotC : Returns 1 for non-carbon atoms, 0 for others. Alias for : NotEqual(AtomicNumbers,Constant(6))
+        * IsNotH : Returns 1 for heavy atoms, 0 for hydrogen atoms. Alias for : Greater(lhs=AtomicNumbers,rhs=Constant(1.5))
+        * IsO : Returns 1 for oxygen atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(8))
+        * IsP : Returns 1 for phosphorus atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(15))
+        * IsPeriodThreePlus : Returns 1 for all elements in periods 3-7. Alias for : Greater(lhs=AtomicNumbers,rhs=Constant(10.5))
+        * IsS : Returns 1 for sulfur atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(16))
+        * IsSi : Returns 1 for silicon atoms, 0 for others. Alias for : Equal(AtomicNumbers,Constant(14))
+        * Position : Returns the X,Y,Z coordinates of the Atom
+        
+      Customizable Implementations
+        * Atom_RelativePropertyScore : Compute per-atom contribution of QSAR score relative to a provided scaffold; "Atom_RelativePropertyScore(help)" shows internal options
+        * BondTypeCount : Counts the number of bonds that satisfy a condition (property == value); "BondTypeCount(help)" shows internal options
+        
+      Operations
+        * Atom_SurfaceArea : approximates the surface area of the atom, considering neighbor overlap; "Atom_SurfaceArea(help)" shows internal options
+        * Atom_Volume : approximates the volume of the atom, considering neighbor overlap; "Atom_Volume(help)" shows internal options
+        
+      Customizable Operations
+        * 3DA : computes 3D autocorrelation of a specified atom property; "3DA(help)" shows internal options
+        * ElementHistogram1D : computes a histogram using a single descriptor; "ElementHistogram1D(help)" shows internal options
+        * ElementHistogram2D : computes a binary histogram using different descriptors for X and Y axis; "ElementHistogram2D(help)" shows internal options
+        * PlanarityAtoms : Returns the chi-squared value of the set of atoms from a perfect plane; "PlanarityAtoms(help)" shows internal options
+        * RDF : computes the radial distribution function using a given atom property; "RDF(help)" shows internal options
+        * RDFGrid : computes the radial distribution function using a given atom property, see
+        http://www.opus.ub.uni-erlangen.de/opus/volltexte/2007/736/pdf/MarkusHemmerDissertation.pdf, p. 65 for details; "RDFGrid(help)" shows internal options
+        * RDFSign : computes the radial distribution function using a given atom property; "RDFSign(help)" shows internal options
+        
+      
+      *********************************************************************************************************************************************************************************
+      **************************************************** Descriptors that can be natively computed for both Molecule and Atom *******************************************************
+      *********************************************************************************************************************************************************************************
+
+        By default, these are computed for each Atom, except when using GenerateDataset with a Molecule-level result descriptor. Molecule-level descriptors can be obtained instead by
+        using MoleculeSum(X), where X is any descriptor listed below
+      
+      Customizable Operations
+        * 2DA : computes 2D (bond distance) autocorrelation of a specified atom property; "2DA(help)" shows internal options
+        * 2DASign : computes 2D (bond distance) autocorrelation of a specified atom property; "2DASign(help)" shows internal options
+        * 2DASmoothSign : computes 2D (bond distance) autocorrelation of a specified atom property; "2DASmoothSign(help)" shows internal options
+        * 3daClashSensitiveSign : computes the smooth radial distribution function using a given atom property; "3daClashSensitiveSign(help)" shows internal options
+        * 3daSmooth : computes the smooth radial distribution function using a given atom property; "3daSmooth(help)" shows internal options
+        * 3daSmoothSign : computes the smooth radial distribution function using a given atom property; "3daSmoothSign(help)" shows internal options
+        
+      
+      *********************************************************************************************************************************************************************************
+      ******************************************************************** General-purpose descriptor operations **********************************************************************
+      *********************************************************************************************************************************************************************************
+
+         These can be used for any type of descriptor (Molecule-level, Atom-level, etc, or other general purpose descriptors)
+      
+      Customizable Implementations
+        * ForEach : Allows creation of a set of descriptors by substituting a user-specified set of values in for a specific parameter; "ForEach(help)" shows internal options
+        * IterativePrediction : uses pre-trained machine learning model(s) on the given object; "IterativePrediction(help)" shows internal options
+        * IterativePredictionMean : computes the mean prediction of pre-trained machine learning model(s) on the given object, iteratively substituting the values returned by the
+          sub-model with the values returned by this model; "IterativePredictionMean(help)" shows internal options
+        * KohonenMapInfo : Computes distances to all members of one or more kohonen maps. May alternatively/additionally compute position  of an element on the map. If both are
+          computed, output will be in the format: position in kohonen map 1, distances to nodes of kohonen map 1, position in kohonen map 2, etc.; "KohonenMapInfo(help)" shows internal
+        options
+        * Mapped : 
+            Note that commas are automatically stripped from the given inputs; "Mapped(help)" shows internal options
+        * Prediction : uses pre-trained machine learning model(s) on the given object; "Prediction(help)" shows internal options
+        * PredictionInfo : Computes prediction-related information, including standard deviation, min, max, and ROC-curve derived statistics such as the PPV or local-PPV associated
+          with a prediction. Output will be statistics first, in the order provided; followed by metrics, in the order they are provided; "PredictionInfo(help)" shows internal options
+        * PredictionMean : computes the mean prediction of pre-trained machine learning model(s) on the given object; "PredictionMean(help)" shows internal options
+        * ToNumeric : Calculates a numeric descriptor and converts it into a string; "ToNumeric(help)" shows internal options
+        
+      Operations
+        * 1st : For pairwise or higher dimension descriptor generation, selects the result from the 1st sub-object; "1st(help)" shows internal options
+        * 2nd : For pairwise or higher dimension descriptor generation, selects the result from the 2nd sub-object; "2nd(help)" shows internal options
+        * 3rd : For pairwise or higher dimension descriptor generation, selects the result from the 3rd sub-object; "3rd(help)" shows internal options
+        * 4th : For pairwise or higher dimension descriptor generation, selects the result from the 4th sub-object; "4th(help)" shows internal options
+        * Abs : Takes the absolute value of a descriptor; "Abs(help)" shows internal options
+        * Cos : Takes the cosine of a descriptor; "Cos(help)" shows internal options
+        * DefineNaN : replaces undefined/NaN values in a descriptor with another value or descriptor; "DefineNaN(help)" shows internal options
+        * DescriptorMax : Returns the max of a descriptor; "DescriptorMax(help)" shows internal options
+        * DescriptorMean : Returns the mean of a descriptor; "DescriptorMean(help)" shows internal options
+        * DescriptorMin : Returns the min of a descriptor; "DescriptorMin(help)" shows internal options
+        * DescriptorRange : Returns the range of a descriptor; "DescriptorRange(help)" shows internal options
+        * DescriptorStandardDeviation : Returns the standarddeviation of a descriptor; "DescriptorStandardDeviation(help)" shows internal options
+        * DescriptorSum : Returns the sum of a descriptor; "DescriptorSum(help)" shows internal options
+        * Divide : Divides two descriptors (binary true/false); "Divide(help)" shows internal options
+        * Equal : Equals two descriptors (binary true/false); "Equal(help)" shows internal options
+        * Exp : Takes the exponential of a descriptor; "Exp(help)" shows internal options
+        * Exponentiate : Exponentiates two descriptors (binary true/false); "Exponentiate(help)" shows internal options
+        * Greater : Greaters two descriptors (binary true/false); "Greater(help)" shows internal options
+        * GreaterEqual : GreaterEquals two descriptors (binary true/false); "GreaterEqual(help)" shows internal options
+        * Less : Lesss two descriptors (binary true/false); "Less(help)" shows internal options
+        * LessEqual : LessEquals two descriptors (binary true/false); "LessEqual(help)" shows internal options
+        * Ln : Takes the natural log of a descriptor; "Ln(help)" shows internal options
+        * Log : Takes the base-10 logarithm of a descriptor; "Log(help)" shows internal options
+        * MaxIndex : computes the index of maximum value for the given descriptor; "MaxIndex(help)" shows internal options
+        * MinIndex : computes the index of minimum value for the given descriptor; "MinIndex(help)" shows internal options
+        * Mod : Mods two descriptors (binary true/false); "Mod(help)" shows internal options
+        * Negative : gives the negative of the given argument of a descriptor; "Negative(help)" shows internal options
+        * Not : 1 if the argument is exactly 0, otherwise returns 0 of a descriptor; "Not(help)" shows internal options
+        * NotEqual : NotEquals two descriptors (binary true/false); "NotEqual(help)" shows internal options
+        * OuterProduct : Outer product of two descriptors; "OuterProduct(help)" shows internal options
+        * RankAsc : rank property values in ascending order. e.g. 0.2 0.21 0.5 0.1 -> 1 2 3 0Duplicate values receive the same rank (averaged) assigned, so 1 1 4 -> 0.5 0.5 2; 
+          "RankAsc(help)" shows internal options
+        * RankDesc : rank property values in descending order. e.g. 0.2 0.21 0.5 0.1 -> 2 1 0 3Duplicate values receive the same rank (averaged) assigned, so 1 1 4 -> 1.5 1.5 0; 
+          "RankDesc(help)" shows internal options
+        * Rescale : Rescales values relative to the Molecule values, specifically, computes: (X-MoleculeMean(X))/MoleculeStd(X). In the event that std is 0, returns 0; 
+          "Rescale(help)" shows internal options
+        * SetNaNToDefinedDescriptorMean : replaces undefined/NaN values in a descriptor with the DescriptorMean of the defined values; 
+          "SetNaNToDefinedDescriptorMean(help)" shows internal options
+        * Sin : Takes the sine of a descriptor; "Sin(help)" shows internal options
+        * SortAsc : sort property values in ascending order; "SortAsc(help)" shows internal options
+        * SortDesc : sort property values in descending order; "SortDesc(help)" shows internal options
+        * Sqr : squares the argument of a descriptor; "Sqr(help)" shows internal options
+        * Sqrt : Takes the square root of a descriptor; "Sqrt(help)" shows internal options
+        * Subtract : Subtracts two descriptors (binary true/false); "Subtract(help)" shows internal options
+        
+      Customizable Operations
+        * Add : Adds two descriptors (binary true/false); "Add(help)" shows internal options
+        * Combine : Array of descriptors; "Combine(help)" shows internal options
+        * Limit : limit descriptor values to a specified range; "Limit(help)" shows internal options
+        * Multiply : Multiplys two descriptors (binary true/false); "Multiply(help)" shows internal options
+        * Partial : selects particular values (by index) of another descriptor; "Partial(help)" shows internal options
+        * Sigmoid : Amplitude / ( 1 + exp(-(x-x_offset)/slope)) + y_offset; "Sigmoid(help)" shows internal options
+        * WithinRange : This descriptor takes on a value of 1 if a descriptor's mean value is within a range, or 0 otherwise; "WithinRange(help)" shows internal options
+        * WithinRangeGaussian : Returns a value between 0 and 1 based on where another descriptor's value falls relative to a given mean value; 
+          "WithinRangeGaussian(help)" shows internal options
+        * WithinRangeSmooth : This descriptor gives values between 0.0 and 1.0 depending on if another descriptor's magnitude is within a specified range.  This descriptor's value
+          decreases smoothly as calculated by a sinusoidal transition (sigmoid-like); "WithinRangeSmooth(help)" shows internal options
+        
+    Other strings will be interpreted as follows:
+    *  : given a number, returns that number, otherwise retrieves the value of the misc property by that name; "(help)" shows internal options
+  <min_value> min/left boundary of the histogram, range: [-1.79769e+308,1.79769e+308]
+  <bin_size> size of each bin in the histogram, range: [0,1.79769e+308]
+  <number_bins> number of bins in the histogram, range: [0,18446744073709551615]
+-string_histogram : properties containing space-delimited strings, This flag can be followed by  any number of 
+  <property> property, choose any implementation of bcl::chemistry::StringPropertyInterface:
+      
+      Basic Implementations
+        * AtomTypes : Retrieves the atom types of all atoms in a molecule
+        * BondTypes : Retrieves the bond types of all bonds in a molecule
+        * Chirality : Retrieves the chirality of all atoms in a molecule
+        * Name : Retrieves the name of the molecule
+        * SumFormula : Retrieves the sum formula a molecule
+        
+      
+      Customizable Implementations
+        * Cached : Retrieve a property already cached on the molecule; "Cached(help)" shows internal options
+        * Numeric : Calculates a numeric molecular or atomic property from the molecule and converts it into a string; "Numeric(help)" shows internal options
+        
+      
+      Customizable Operations
+        * MappedString : uses one property as a key to return the corresponding value from a 2-column table in a file
+            Input files have rows with a key, followed by spaces or tabs, followed by a value string
+            2   5.0 6.0 12.0
+            1   3.0 14.0 18.0; "MappedString(help)" shows internal options
+        
+    Other strings will be interpreted as follows:
+    *  : Calculates a numeric molecular or atomic property from the molecule and converts it into a string; "(help)" shows internal options
+-output_histogram : filename to write out histograms
+  <output_histogram> filename to write out histograms, default: "molecule.histogram.txt"
+-statistics : properties on which to take statistics (output file is controlled by -output_histogram), This flag can be followed by  any number of 
+  <statistics> properties on which to take statistics (output file is controlled by -output_histogram), 
+    choose any implementation of bcl::chemistry::StringPropertyInterface (already listed)
+-tabulate : properties to put into a csv file; file will always contain molecule index in the first column, This flag can be followed by  any number of 
+  <property> property, choose any implementation of bcl::chemistry::StringPropertyInterface (already listed)
+-output_table : filename to write out csv of properties given in -table
+  <output_table> filename to write out csv of properties given in -table, default: "properties.csv"
+-remove : miscellaneous properties to remove from all molecules, This flag can be followed by  any number of 
+  <property> miscellaneous property to remove from all molecules
+-remove_all : removes all properties from all molecules
+-add : descriptors / properties to add to all molecules, This flag can be followed by  any number of 
+  <property> descriptors / properties to add to all molecules, Any of the following:
+                                                               choose any implementation of bcl::chemistry::StringPropertyInterface (already listed)
+                                                               Or allowed values: {Index}
+                                                               Or choose any implementation of Molecule/Atom Numeric Descriptor (already listed)
+-add_strings : strings to add as descriptors / properties to all molecules, This flag can be followed by  any number of 
+  <property> name of descriptor / property to add
+  <string> the string assigned to the property / descriptor name for all molecules
+-rename : for each pair of properties listed, change the name from the first property to the second, This flag can be followed by  any number of 
+  <initial_property_name> property name as it is currently in the molecule
+  <desired_property_name> property name to rename the initial property name to
+-output : sdf filename for where to write out molecules
+  <filename> sdf filename for where to write out molecules, optional
+
+=============================================================================================================================================================================================
+
+additional arguments (including the application) can be loaded from files by passing e.g. @my_file.txt
+  If no application is specified, attempts to read commands from bcl_commands.txt
